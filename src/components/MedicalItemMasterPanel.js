@@ -109,6 +109,16 @@ class MedicalItemMasterPanel extends FormPanel {
               onChange={(p) => this.updateAttribute("careType", p)}
             />
           </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <PublishedComponent
+              pubRef="medical.ItemCategoryPicker"
+              withNull={true}
+              required
+              readOnly={Boolean(edited.id) || readOnly}
+              value={edited ? edited.category : ""}
+              onChange={(c) => this.updateAttribute("itemCategory", c)}
+            />
+          </Grid>
           <Grid item className={classes.item}>
             <PublishedComponent
               pubRef="medical.PatientCategoryPicker"
