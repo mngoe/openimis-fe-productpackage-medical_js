@@ -1,4 +1,5 @@
 import messages_en from "./translations/en.json";
+import messages_fr from "./translations/fr.json";
 import reducer from "./reducer";
 import DiagnosisPicker from "./pickers/DiagnosisPicker";
 import ItemPicker from "./pickers/ItemPicker";
@@ -16,6 +17,7 @@ import MedicalItemsPage from "./pages/MedicalItemsPage";
 import MedicalItemPage from "./pages/MedicalItemPage";
 import MedicalItemOverviewPage from "./pages/MedicalItemOverviewPage";
 import ItemTypePicker from "./pickers/ItemTypePicker";
+import ItemCategoryPicker from "./pickers/ItemCategoryPicker";
 
 const ROUTE_ADMIN_MEDICAL_SERVICES = "medical/medicalServices";
 const ROUTE_ADMIN_MEDICAL_SERVICES_OVERVIEW = "medical/medicalServices/overview";
@@ -25,7 +27,7 @@ const ROUTE_ADMIN_MEDICAL_ITEMS_OVERVIEW = "medical/medicalItems/overview";
 const ROUTE_ADMIN_MEDICAL_ITEMS_NEW = "medical/medicalItems/new";
 
 const DEFAULT_CONFIG = {
-  "translations": [{ key: "en", messages: messages_en }],
+  "translations": [{ key: "en", messages: messages_en }, { key: "fr", messages: messages_fr }],
   "reducers": [{ key: "medical", reducer }],
   "core.Router": [
     { path: ROUTE_ADMIN_MEDICAL_SERVICES, component: MedicalServicesPage },
@@ -58,6 +60,7 @@ const DEFAULT_CONFIG = {
     { key: "medical.ServiceTypePicker", ref: ServiceTypePicker },
     { key: "medical.ServiceTypePicker.projection", ref: null },
     { key: "medical.ItemTypePicker", ref: ItemTypePicker },
+    { key: "medical.ItemCategoryPicker", ref: ItemCategoryPicker },
     { key: "medical.ItemTypePicker.projection", ref: null },
     { key: "medical.PatientCategoryPicker", ref: PatientCategoryPicker },
     { key: "medical.PatientCategoryPicker.projection", ref: null },

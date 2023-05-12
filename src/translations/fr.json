@@ -1,0 +1,8 @@
+{
+    "medical.itemCategory": "Catégorie d'article",
+    "medical.itemCategory.null": "Aucune",
+    "medical.itemCategory.IM": "Implant",
+    "medical.itemCategory.IN": "Injectable",
+    "medical.itemCategory.P": "Pilule",
+    "medical.itemCategory.DIU": "DIU"
+}

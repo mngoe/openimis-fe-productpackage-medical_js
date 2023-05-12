@@ -53,6 +53,7 @@ const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
   "validityFrom",
   "validityTo",
   "package",
+  "category"
 ];
 
 export function formatMedicalItemOrServiceGQL(mm, ms) {
@@ -69,6 +70,7 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.category && ms.category !== " " ? `category: "${formatGQLString(ms.category)}"` : ""}
     ${ms.level ? `level: "${formatGQLString(ms.level)}"` : ""}
     ${ms.package ? `package: "${formatGQLString(ms.package)}"` : ""}
+    ${ms.package ? `itemCategory: "${formatGQLString(ms.itemCategory)}"` : ""}
   `;
   return req;
 }
