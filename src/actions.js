@@ -70,7 +70,7 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.category && ms.category !== " " ? `category: "${formatGQLString(ms.category)}"` : ""}
     ${ms.level ? `level: "${formatGQLString(ms.level)}"` : ""}
     ${ms.package ? `package: "${formatGQLString(ms.package)}"` : ""}
-    ${ms.itemCategory ? `itemCategory: "${formatGQLString(ms.itemCategory)}"` : ""}
+    ${ms.itemcategory ? `itemcategory: "${formatGQLString(ms.itemcategory)}"` : ""}
   `;
   return req;
 }

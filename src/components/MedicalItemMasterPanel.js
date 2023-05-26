@@ -115,8 +115,8 @@ class MedicalItemMasterPanel extends FormPanel {
               withNull={true}
               required
               readOnly={Boolean(edited.id) || readOnly}
-              value={edited ? edited.category : ""}
-              onChange={(c) => this.updateAttribute("itemCategory", c)}
+              value={edited ? edited.itemcategory : ""}
+              onChange={(c) => this.updateAttribute("itemcategory", c)}
             />
           </Grid>
           <Grid item className={classes.item}>

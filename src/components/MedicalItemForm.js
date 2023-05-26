@@ -131,7 +131,7 @@ class MedicalItemForm extends Component {
     this.state.medicalItem.type &&
     this.state.medicalItem.price &&
     this.state.medicalItem.careType &&
-    this.state.medicalItem.itemCategory;
+    this.state.medicalItem.itemcategory;
 
   save = (medicalItem) => {
     this.setState(
