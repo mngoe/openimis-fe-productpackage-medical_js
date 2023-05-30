@@ -124,14 +124,17 @@ class MedicalItemForm extends Component {
     }
   };
 
-  canSave = () =>
+  canSave = () => {
     this.state.medicalItem &&
-    this.state.medicalItem.code &&
-    this.state.medicalItem.name &&
-    this.state.medicalItem.type &&
-    this.state.medicalItem.price &&
-    this.state.medicalItem.careType &&
-    this.state.medicalItem.itemcategory;
+      this.state.medicalItem.code &&
+      this.state.medicalItem.name &&
+      this.state.medicalItem.type &&
+      this.state.medicalItem.price &&
+      this.state.medicalItem.careType &&
+      this.state.medicalItem.itemcategory;
+    !isNaN(this.state.medicalItem.price) &&
+      this.state.medicalItem.careType;
+  }
 
   save = (medicalItem) => {
     this.setState(
