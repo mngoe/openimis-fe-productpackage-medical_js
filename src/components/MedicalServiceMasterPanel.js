@@ -27,38 +27,38 @@ class MedicalServiceMasterPanel extends FormPanel {
   constructor(props) {
     super(props);
     this.state = {
-      readOnlyPrice : props.medicalService.packagetype=="S"? 0 : !props.medicalService.manualPrice,
+      readOnlyPrice: props.medicalService.packagetype == "S" ? 0 : !props.medicalService.manualPrice,
     }
 
-    if(this.props.edited){
-      if(this.props.edited.packagetype !=null && this.props.edited.packagetype!="S"){
+    if (this.props.edited) {
+      if (this.props.edited.packagetype != null && this.props.edited.packagetype != "S") {
         this.showManual = true;
       }
     }
   }
 
-  showCheckboxManual= (pSelection) => {
-    if(pSelection!=null && pSelection!="S"){
+  showCheckboxManual = (pSelection) => {
+    if (pSelection != null && pSelection != "S") {
       this.showManual = true;
       this.setState(
         {
-          readOnlyPrice : 1
+          readOnlyPrice: 1
         }
       );
-    }else{
+    } else {
       this.showManual = false;
       this.setState(
         {
-          readOnlyPrice : 0
+          readOnlyPrice: 0
         }
       );
     }
   };
 
-  changeManual =  () => {
+  changeManual = () => {
     this.setState(
       {
-        readOnlyPrice : !this.state.readOnlyPrice,
+        readOnlyPrice: !this.state.readOnlyPrice,
       }
     );
   };
@@ -147,15 +147,28 @@ class MedicalServiceMasterPanel extends FormPanel {
           <Grid item xs={3} className={classes.item}>
             <AmountInput
               module="admin"
-              label={this.props.medicalService.packagetype=='F' ? `edit.services.ceiling` : `medical.service.price`}
+              label={this.props.medicalService.packagetype == 'F' ? `edit.services.ceiling` : `medical.service.price`}
               required={!this.state.readOnlyPrice}
               name="price"
-              readOnly={Boolean(edited.id) || readOnly || this.state.readOnlyPrice }
+              readOnly={Boolean(edited.id) || readOnly || this.state.readOnlyPrice}
               value={edited ? edited.price : this.props.priceTotal}
               onChange={(p) => {
                 this.updateAttribute("price", p);
               }
               }
+            />
+          </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <PublishedComponent
+              pubRef="program.ProgramPicker"
+              name="program"
+              label={formatMessage(intl, "medical", "programPicker.label")}
+              placeholder={formatMessage(intl, "medical", "programPicker.placeholder")}
+              value={edited?.programs ?? []}
+              multiple={true}
+              readOnly={readOnly}
+              required={true}
+              onChange={(programs) => this.updateAttribute("programs", programs)}
             />
           </Grid>
         </Grid>
