@@ -193,8 +193,7 @@ class MedicalServiceForm extends Component {
     !isNaN(this.state.medicalService.price) &&
     this.state.medicalService.level &&
     this.state.medicalService.packagetype &&
-    this.state.medicalService.careType && 
-    this.state.medicalService.programs;
+    this.state.medicalService.careType;
 
   }
 
