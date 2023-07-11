@@ -47,7 +47,7 @@ const MEDICAL_SERVICE_FULL_PROJECTION = (mm) => [
   "validityTo",
   "level",
   "category",
-
+  "programs"
 ];
 
 const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
