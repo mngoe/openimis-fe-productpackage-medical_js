@@ -109,6 +109,7 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.packagetype ?`manualPrice: "${formatGQLBoolean(ms.manualPrice)}"` : "" }
     ${formatDetails("service", ms.serviceserviceSet)}
     ${formatDetails("item", ms.servicesLinked)}
+    ${!!ms.programs ? `programs: [${ms.programs.map((p) => p.idProgram +"\n")}]`:""}
   `;
   return req;
 }

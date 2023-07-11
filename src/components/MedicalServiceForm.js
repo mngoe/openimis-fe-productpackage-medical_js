@@ -21,12 +21,13 @@ import { RIGHT_MEDICALSERVICES } from "../constants";
 import MedicalServiceChildPanel from "./MedicalServiceChildPanel";
 import MedicalItemChildPanel from "./MedicalItemChildPanel";
 
-import { 
+import {
   createMedicalService,
   fetchMedicalService,
   fetchMedicalServices,
   fetchMedicalServiceMutation,
-  newMedicalService } from "../actions";
+  newMedicalService
+} from "../actions";
 import MedicalServiceMasterPanel from "./MedicalServiceMasterPanel";
 
 const styles = (theme) => ({
@@ -46,7 +47,7 @@ class MedicalItemsPanel extends Component {
 }
 
 class MedicalServiceForm extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.state = {
       lockNew: false,
@@ -55,8 +56,8 @@ class MedicalServiceForm extends Component {
       newMedicalService: true,
       confirmedAction: null,
       totalPrice: 0,
-      sumItems:0,
-      sumServices:0,
+      sumItems: 0,
+      sumServices: 0,
       manualPrice: false
     };
   }
@@ -156,27 +157,27 @@ class MedicalServiceForm extends Component {
 
   priceCalcul = () => {
 
-    let sumItem = 0 ;
-    let sumService = 0 ;
-    if(this.state.medicalService.servicesLinked != undefined){
+    let sumItem = 0;
+    let sumService = 0;
+    if (this.state.medicalService.servicesLinked != undefined) {
       this.state.medicalService.servicesLinked.forEach((item) => {
-        if(item.priceAsked != undefined){
-          sumItem += parseFloat(item.priceAsked)*parseFloat(item.qtyProvided);
+        if (item.priceAsked != undefined) {
+          sumItem += parseFloat(item.priceAsked) * parseFloat(item.qtyProvided);
         }
       });
     }
 
-    if(this.state.medicalService.serviceserviceSet != undefined){
+    if (this.state.medicalService.serviceserviceSet != undefined) {
       this.state.medicalService.serviceserviceSet.forEach((service) => {
-        if(service.priceAsked != undefined){
-          sumService += parseFloat(service.priceAsked)*parseFloat(service.qtyProvided);
+        if (service.priceAsked != undefined) {
+          sumService += parseFloat(service.priceAsked) * parseFloat(service.qtyProvided);
         }
-      });      
+      });
     }
-    this.state.totalPrice = sumItem+sumService;
+    this.state.totalPrice = sumItem + sumService;
 
-    if(this.state.medicalService.packagetype!="S" && this.state.medicalService.packagetype!=null){
-      if(this.state.medicalService.manualPrice != true){
+    if (this.state.medicalService.packagetype != "S" && this.state.medicalService.packagetype != null) {
+      if (this.state.medicalService.manualPrice != true) {
         this.state.medicalService.price = this.state.totalPrice;
       }
     }
@@ -187,13 +188,14 @@ class MedicalServiceForm extends Component {
     console.log(this.state);
 
     return this.state.medicalService &&
-    this.state.medicalService.code &&
-    this.state.medicalService.name &&
-    this.state.medicalService.type &&
-    !isNaN(this.state.medicalService.price) &&
-    this.state.medicalService.level &&
-    this.state.medicalService.packagetype &&
-    this.state.medicalService.careType;
+      this.state.medicalService.code &&
+      this.state.medicalService.name &&
+      this.state.medicalService.type &&
+      !isNaN(this.state.medicalService.price) &&
+      this.state.medicalService.level &&
+      this.state.medicalService.packagetype &&
+      this.state.medicalService.careType &&
+      this.state.medicalService.programs;
 
   }
 
@@ -245,31 +247,31 @@ class MedicalServiceForm extends Component {
         <ErrorBoundary>
           {((!!fetchedMedicalService && !!medicalService && medicalService.uuid === medicalServiceId) ||
             !medicalServiceId) && (
-            <Form
-              module="medicalService"
-              title={
-                this.state.newMedicalService
-                  ? "medical.service.MedicalServiceOverview.newTitle"
-                  : "medical.service.MedicalServiceOverview.title"
-              }
-              edited_id={medicalServiceId}
-              edited={medicalService}
-              reset={reset}
-              back={back}
-              add={!!add && !this.state.newMedicalService ? this.add : null}
-              readOnly={readOnly || lockNew || (!!medicalService && !!medicalService.validityTo)}
-              actions={actions}
-              overview={overview}
-              HeadPanel={MedicalServiceMasterPanel}
-              Panels={[MedicalServicesPanel,MedicalItemsPanel]}
-              medicalService={medicalService}
-              onEditedChanged={this.onEditedChanged}
-              priceTotal={this.state.totalPrice}
-              canSave={this.canSave}
-              save={save ? this.save : null}
-              onActionToConfirm={this.onActionToConfirm}
-            />
-          )}
+              <Form
+                module="medicalService"
+                title={
+                  this.state.newMedicalService
+                    ? "medical.service.MedicalServiceOverview.newTitle"
+                    : "medical.service.MedicalServiceOverview.title"
+                }
+                edited_id={medicalServiceId}
+                edited={medicalService}
+                reset={reset}
+                back={back}
+                add={!!add && !this.state.newMedicalService ? this.add : null}
+                readOnly={readOnly || lockNew || (!!medicalService && !!medicalService.validityTo)}
+                actions={actions}
+                overview={overview}
+                HeadPanel={MedicalServiceMasterPanel}
+                Panels={[MedicalServicesPanel, MedicalItemsPanel]}
+                medicalService={medicalService}
+                onEditedChanged={this.onEditedChanged}
+                priceTotal={this.state.totalPrice}
+                canSave={this.canSave}
+                save={save ? this.save : null}
+                onActionToConfirm={this.onActionToConfirm}
+              />
+            )}
         </ErrorBoundary>
       </div>
     );
