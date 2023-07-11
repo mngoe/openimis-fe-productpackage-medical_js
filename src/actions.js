@@ -47,7 +47,7 @@ const MEDICAL_SERVICE_FULL_PROJECTION = (mm) => [
   "validityTo",
   "level",
   "category",
-  "programs"
+  "program { edges{ node{id idProgram nameProgram validityDateFrom}}}"
 ];
 
 const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
