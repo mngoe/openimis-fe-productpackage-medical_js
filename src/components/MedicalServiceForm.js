@@ -92,7 +92,10 @@ class MedicalServiceForm extends Component {
     if (!prevProps.fetchedMedicalService && !!this.props.fetchedMedicalService) {
       const { medicalService } = this.props;
       this.setState({
-        medicalService,
+        medicalService: {
+          ...medicalService,
+          programs: medicalService.program.edges.map((p) => p.node),
+        },
         medicalServiceId: medicalService.id,
         lockNew: false,
         newMedicalService: false,
