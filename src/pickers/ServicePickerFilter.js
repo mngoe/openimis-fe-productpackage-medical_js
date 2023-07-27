@@ -73,13 +73,19 @@ const ServicePickerFilter = (props) => {
     servicePrograms.forEach(function (program) {
       hfPrograms.forEach(function (p) {
         if (p.idProgram == program.idProgram) {
-          options.push(service)
+          var i = 0;
+          options.forEach(function (opt) {
+            if (opt.code == service.code) {
+              i++;
+            }
+          })
+          if (i == 0) {
+            options.push(service)
+          }
         }
       })
     })
   })
-
-  console.log(options)
 
   return (
     <Autocomplete
