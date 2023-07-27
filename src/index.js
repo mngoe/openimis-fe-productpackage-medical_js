@@ -4,6 +4,7 @@ import reducer from "./reducer";
 import DiagnosisPicker from "./pickers/DiagnosisPicker";
 import ItemPicker from "./pickers/ItemPicker";
 import ServicePicker from "./pickers/ServicePicker";
+import ServicePickerFilter from "./pickers/ServicePickerFilter";
 import ServiceFilterWithoutHFPicker from "./pickers/ServiceFilterWithoutHFPicker";
 import VisitTypePicker from "./pickers/VisitTypePicker";
 import CareTypePicker from "./pickers/CareTypePicker";
@@ -55,6 +56,7 @@ const DEFAULT_CONFIG = {
     { key: "medical.DiagnosisPicker.projection", ref: ["id", "code", "name"] },
     { key: "medical.ItemPicker", ref: ItemPicker },
     { key: "medical.ServicePicker", ref: ServicePicker },
+    { key: "medical.ServicePickerFilter", ref: ServicePickerFilter },
     { key: "medical.ServiceFilterWithoutHFPicker", ref: ServiceFilterWithoutHFPicker },
     { key: "medical.VisitTypePicker", ref: VisitTypePicker },
     { key: "medical.VisitTypePicker.projection", ref: null },
