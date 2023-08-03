@@ -64,6 +64,7 @@ const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
   "validityFrom",
   "validityTo",
   "package",
+  "program { edges{ node{id idProgram nameProgram validityDateFrom}}}"
 ];
 
 function formatGQLBoolean(value){
