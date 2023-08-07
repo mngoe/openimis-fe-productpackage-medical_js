@@ -3,6 +3,7 @@ import messages_fr from "./translations/fr.json";
 import reducer from "./reducer";
 import DiagnosisPicker from "./pickers/DiagnosisPicker";
 import ItemPicker from "./pickers/ItemPicker";
+import ItemPickerFilter from "./pickers/ItemPickerFilter";
 import ServicePicker from "./pickers/ServicePicker";
 import ServicePickerFilter from "./pickers/ServicePickerFilter";
 import ServiceFilterWithoutHFPicker from "./pickers/ServiceFilterWithoutHFPicker";
@@ -55,6 +56,7 @@ const DEFAULT_CONFIG = {
     { key: "medical.DiagnosisPicker", ref: DiagnosisPicker },
     { key: "medical.DiagnosisPicker.projection", ref: ["id", "code", "name"] },
     { key: "medical.ItemPicker", ref: ItemPicker },
+    {key: "medical.ItemPicker",ref: ItemPickerFilter},
     { key: "medical.ServicePicker", ref: ServicePicker },
     { key: "medical.ServicePickerFilter", ref: ServicePickerFilter },
     { key: "medical.ServiceFilterWithoutHFPicker", ref: ServiceFilterWithoutHFPicker },
