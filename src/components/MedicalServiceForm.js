@@ -198,8 +198,7 @@ class MedicalServiceForm extends Component {
       this.state.medicalService.level &&
       this.state.medicalService.packagetype &&
       this.state.medicalService.careType &&
-      this.state.medicalService.programs &&
-      this.state.medicalService.programs.length != 0;
+      this.state.medicalService.program;
 
   }
 

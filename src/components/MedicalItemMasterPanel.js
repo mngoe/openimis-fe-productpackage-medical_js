@@ -24,7 +24,7 @@ const styles = (theme) => ({
 
 class MedicalItemMasterPanel extends FormPanel {
   render() {
-    const { intl,classes, edited, readOnly } = this.props;
+    const { intl, classes, edited, readOnly } = this.props;
     return (
       <>
         <Grid container className={classes.item}>
@@ -51,7 +51,6 @@ class MedicalItemMasterPanel extends FormPanel {
           <Grid item xs={2} className={classes.item}>
             <PublishedComponent
               pubRef="medical.ItemTypePicker"
-              withNull={true}
               required
               readOnly={Boolean(edited.id) || readOnly}
               value={edited ? edited.type : ""}
@@ -104,13 +103,11 @@ class MedicalItemMasterPanel extends FormPanel {
             <PublishedComponent
               pubRef="program.ProgramPicker"
               name="program"
-              label={formatMessage(intl, "medical", "programPicker.label")}
-              placeholder={formatMessage(intl, "medical", "programPicker.placeholder")}
-              value={edited?.programs ?? []}
-              multiple={true}
+              value={edited ? edited.program : ""}
+              withNull={true}
               readOnly={readOnly}
               required={true}
-              onChange={(programs) => this.updateAttribute("programs", programs)}
+              onChange={(program) => this.updateAttribute("program", program)}
             />
           </Grid>
           <Grid item xs={4} className={classes.item}>

@@ -164,11 +164,10 @@ class MedicalServiceMasterPanel extends FormPanel {
               name="program"
               label={formatMessage(intl, "medical", "programPicker.label")}
               placeholder={formatMessage(intl, "medical", "programPicker.placeholder")}
-              value={edited?.programs ?? []}
-              multiple={true}
+              value={edited ? edited.program : ""}
               readOnly={readOnly}
               required={true}
-              onChange={(programs) => this.updateAttribute("programs", programs)}
+              onChange={(program) => this.updateAttribute("program", program)}
             />
           </Grid>
         </Grid>

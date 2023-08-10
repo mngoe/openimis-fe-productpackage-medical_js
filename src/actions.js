@@ -47,7 +47,7 @@ const MEDICAL_SERVICE_FULL_PROJECTION = (mm) => [
   "validityTo",
   "level",
   "category",
-  "program { edges{ node{id idProgram nameProgram validityDateFrom}}}"
+  "program{idProgram nameProgram}"
 ];
 
 const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
@@ -64,7 +64,7 @@ const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
   "validityFrom",
   "validityTo",
   "package",
-  "program { edges{ node{id idProgram nameProgram validityDateFrom}}}"
+  "program{idProgram nameProgram}"
 ];
 
 function formatGQLBoolean(value){
@@ -110,7 +110,7 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.packagetype ?`manualPrice: "${formatGQLBoolean(ms.manualPrice)}"` : "" }
     ${formatDetails("service", ms.serviceserviceSet)}
     ${formatDetails("item", ms.servicesLinked)}
-    ${!!ms.programs ? `programs: [${ms.programs.map((p) => p.idProgram +"\n")}]`:""}
+    ${ms.program ? `program: "${ms.program.idProgram}"`:""}
   `;
   return req;
 }
