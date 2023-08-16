@@ -46,7 +46,7 @@ const ItemPickerFilter = (props) => {
 
   items.forEach(function (item) {
     hfPrograms.forEach(function (p) {
-      if (p.idProgram == item.program.idProgram) {
+      if (p.idProgram == item?.program?.idProgram) {
         var i = 0;
         options.forEach(function (opt) {
           if (opt.code == item.code) {

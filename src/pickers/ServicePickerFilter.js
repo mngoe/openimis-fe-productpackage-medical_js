@@ -66,7 +66,7 @@ const ServicePickerFilter = (props) => {
 
   services.forEach(function (service) {
     hfPrograms.forEach(function (p) {
-      if (p.idProgram == service.program.idProgram) {
+      if (p.idProgram == service?.program?.idProgram) {
         var i = 0;
         options.forEach(function (opt) {
           if (opt.code == service.code) {
