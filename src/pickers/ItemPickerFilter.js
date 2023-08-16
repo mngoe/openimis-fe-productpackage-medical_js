@@ -29,13 +29,9 @@ const ItemPickerFilter = (props) => {
           node {
             id name code price
             ${extraFragment ?? ""}
-            program { 
-              edges{ 
-                node{
-                  idProgram 
-                  nameProgram
-                }
-              }
+            program {
+              idProgram 
+              nameProgram
             }
           }
         }
@@ -49,21 +45,18 @@ const ItemPickerFilter = (props) => {
   let options = [];
 
   items.forEach(function (item) {
-    let itemPrograms = item.program.edges.map((p) => p.node);
-    itemPrograms.forEach(function (program) {
-      hfPrograms.forEach(function (p) {
-        if (p.idProgram == program.idProgram) {
-          var i = 0;
-          options.forEach(function (opt) {
-            if (opt.code == item.code) {
-              i++;
-            }
-          })
-          if (i == 0) {
-            options.push(item)
+    hfPrograms.forEach(function (p) {
+      if (p.idProgram == item?.program?.idProgram) {
+        var i = 0;
+        options.forEach(function (opt) {
+          if (opt.code == item.code) {
+            i++;
           }
+        })
+        if (i == 0) {
+          options.push(item)
         }
-      })
+      }
     })
   })
 

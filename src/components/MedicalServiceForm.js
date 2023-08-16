@@ -92,10 +92,7 @@ class MedicalServiceForm extends Component {
     if (!prevProps.fetchedMedicalService && !!this.props.fetchedMedicalService) {
       const { medicalService } = this.props;
       this.setState({
-        medicalService: {
-          ...medicalService,
-          programs: medicalService.program.edges.map((p) => p.node),
-        },
+        medicalService,
         medicalServiceId: medicalService.id,
         lockNew: false,
         newMedicalService: false,
@@ -188,7 +185,7 @@ class MedicalServiceForm extends Component {
 
   canSave = () => {
     this.priceCalcul();
-    console.log(this.state);
+    //console.log(this.state);
 
     return this.state.medicalService &&
       this.state.medicalService.code &&
@@ -198,8 +195,7 @@ class MedicalServiceForm extends Component {
       this.state.medicalService.level &&
       this.state.medicalService.packagetype &&
       this.state.medicalService.careType &&
-      this.state.medicalService.programs &&
-      this.state.medicalService.programs.length != 0;
+      this.state.medicalService.program;
 
   }
 

@@ -10,6 +10,6 @@
   "edit.services.ceiling": "Plafond",
   "edit.items.ceiling": "Plafond",
   "medical.service.packagetype": "Type",
-  "medical.programPicker.label": "Programme(s)",
-  "medical.programPicker.placeholder": "Selectionner le(s) programme(s) du soin"
+  "medical.programPicker.label": "Programme",
+  "medical.programPicker.placeholder": "Selectionner le programme du soin"
 }

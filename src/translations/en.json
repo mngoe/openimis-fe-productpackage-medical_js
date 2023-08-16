@@ -112,6 +112,6 @@
   "edit.services.ceiling":"Ceiling",
   "edit.items.ceiling":"Ceiling",
   "medical.item.createMedicalItem.mutationLabel": "Create Medical Item",
-  "medical.programPicker.label": "Program(s)",
-  "medical.programPicker.placeholder": "Select HealthFacility program(s)"
+  "medical.programPicker.label": "Program",
+  "medical.programPicker.placeholder": "Select program"
 }
