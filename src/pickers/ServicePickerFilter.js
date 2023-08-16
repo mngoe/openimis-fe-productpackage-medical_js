@@ -69,21 +69,18 @@ const ServicePickerFilter = (props) => {
   let options = [];
 
   services.forEach(function (service) {
-    let servicePrograms = service.program.edges.map((p) => p.node);
-    servicePrograms.forEach(function (program) {
-      hfPrograms.forEach(function (p) {
-        if (p.idProgram == program.idProgram) {
-          var i = 0;
-          options.forEach(function (opt) {
-            if (opt.code == service.code) {
-              i++;
-            }
-          })
-          if (i == 0) {
-            options.push(service)
+    hfPrograms.forEach(function (p) {
+      if (p.idProgram == service.program.idProgram) {
+        var i = 0;
+        options.forEach(function (opt) {
+          if (opt.code == service.code) {
+            i++;
           }
+        })
+        if (i == 0) {
+          options.push(service)
         }
-      })
+      }
     })
   })
 
