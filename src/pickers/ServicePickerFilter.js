@@ -49,13 +49,9 @@ const ServicePickerFilter = (props) => {
               qtyProvided
               pcpDate
             }
-            program { 
-              edges{ 
-                node{
-                  idProgram 
-                  nameProgram
-                }
-              }
+            program {
+              idProgram 
+              nameProgram
             }
           }
         }

@@ -29,13 +29,9 @@ const ItemPickerFilter = (props) => {
           node {
             id name code price
             ${extraFragment ?? ""}
-            program { 
-              edges{ 
-                node{
-                  idProgram 
-                  nameProgram
-                }
-              }
+            program {
+              idProgram 
+              nameProgram
             }
           }
         }
