@@ -185,7 +185,7 @@ class MedicalServiceForm extends Component {
 
   canSave = () => {
     this.priceCalcul();
-    console.log(this.state);
+    //console.log(this.state);
 
     return this.state.medicalService &&
       this.state.medicalService.code &&
