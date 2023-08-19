@@ -56,7 +56,7 @@ const DEFAULT_CONFIG = {
     { key: "medical.DiagnosisPicker", ref: DiagnosisPicker },
     { key: "medical.DiagnosisPicker.projection", ref: ["id", "code", "name"] },
     { key: "medical.ItemPicker", ref: ItemPicker },
-    {key: "medical.ItemPicker",ref: ItemPickerFilter},
+    {key: "medical.ItemPickerFilter",ref: ItemPickerFilter},
     { key: "medical.ServicePicker", ref: ServicePicker },
     { key: "medical.ServicePickerFilter", ref: ServicePickerFilter },
     { key: "medical.ServiceFilterWithoutHFPicker", ref: ServiceFilterWithoutHFPicker },
