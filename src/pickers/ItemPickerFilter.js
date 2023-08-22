@@ -17,7 +17,7 @@ const ItemPickerFilter = (props) => {
     placeholder,
     extraFragment,
     multiple,
-    hfPrograms
+    claimProgram
   } = props;
   const [searchString, setSearchString] = useState(null);
   const { formatMessage } = useTranslations("medical");
@@ -44,9 +44,9 @@ const ItemPickerFilter = (props) => {
   let items = data?.medicalItemsStr?.edges.map((edge) => edge.node) ?? [];
   let options = [];
 
-  items.forEach(function (item) {
-    hfPrograms.forEach(function (p) {
-      if (p.idProgram == item?.program?.idProgram) {
+  if (claimProgram != '' && claimProgram != undefined && claimProgram != null) {
+    items.forEach(function (item) {
+      if (claimProgram == item?.program?.idProgram) {
         var i = 0;
         options.forEach(function (opt) {
           if (opt.code == item.code) {
@@ -58,7 +58,7 @@ const ItemPickerFilter = (props) => {
         }
       }
     })
-  })
+  }
 
   return (
     <Autocomplete
