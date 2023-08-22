@@ -17,7 +17,7 @@ const ServicePickerFilter = (props) => {
     placeholder,
     extraFragment,
     multiple,
-    hfPrograms
+    claimProgram
   } = props;
   const [searchString, setSearchString] = useState(null);
   const { formatMessage } = useTranslations("medical");
@@ -64,9 +64,9 @@ const ServicePickerFilter = (props) => {
   let services = data?.medicalServicesStr?.edges.map((edge) => edge.node) ?? [];
   let options = [];
 
-  services.forEach(function (service) {
-    hfPrograms.forEach(function (p) {
-      if (p.idProgram == service?.program?.idProgram) {
+  if (claimProgram != '' && claimProgram != undefined && claimProgram != null) {
+    services.forEach(function (service) {
+      if (claimProgram == service?.program?.idProgram) {
         var i = 0;
         options.forEach(function (opt) {
           if (opt.code == service.code) {
@@ -78,7 +78,8 @@ const ServicePickerFilter = (props) => {
         }
       }
     })
-  })
+  }
+
 
   return (
     <Autocomplete
