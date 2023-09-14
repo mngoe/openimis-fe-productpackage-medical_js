@@ -13,6 +13,7 @@ class PatientCategoryPicker extends Component {
     PATIENT_CATEGORIES.forEach((cat) => {
       result[cat] = !!(value & cat);
     });
+    console.log("resultat :", result)
     return result;
   }
 
