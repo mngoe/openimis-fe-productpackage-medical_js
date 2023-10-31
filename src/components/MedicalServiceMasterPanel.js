@@ -65,7 +65,6 @@ class MedicalServiceMasterPanel extends FormPanel {
 
   render() {
     const { classes, edited, readOnly, intl } = this.props;
-    console.log('edited value:', edited)
     return (
       <ErrorBoundary>
         <Grid container className={classes.item}>
