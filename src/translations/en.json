@@ -56,7 +56,6 @@
   "medical.patientCategory.2": "Female",
   "medical.patientCategory.4": "Adult",
   "medical.patientCategory.8": "Minor",
-  "medical.patientCategory.16": "Child",
   "medical.service.MedicalServiceOverview.newTitle": "New Medical Service",
   "medical.service.medicalServiceSummaries": "{count} medical service(s) found",
   "medical.addNewMedicalService.tooltip": "Add a new medical service",

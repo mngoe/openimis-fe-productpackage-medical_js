@@ -67,7 +67,7 @@ class MedicalServiceForm extends Component {
   }
 
   newMedicalService() {
-    return { patientCategory: 31 };
+    return { patientCategory: 15 };
   }
 
   componentDidMount() {

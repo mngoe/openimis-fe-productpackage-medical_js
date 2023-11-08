@@ -37,7 +37,7 @@ class MedicalItemForm extends Component {
   };
 
   newMedicalItem() {
-    return { patientCategory: 31 };
+    return { patientCategory: 15 };
   }
 
   componentDidMount() {
