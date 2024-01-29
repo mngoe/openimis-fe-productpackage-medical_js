@@ -64,10 +64,10 @@ class MedicalServiceMasterPanel extends FormPanel {
   };
 
   render() {
-    const { classes, edited, readOnly, intl } = this.props;
+    const { classes, edited, readOnly, intl } = this.props;               
     return (
       <ErrorBoundary>
-        <Grid container className={classes.item}>
+        <Grid container className={classes.item}> 
           <Grid item xs={2} className={classes.item}>
             <TextInput
               module="admin"

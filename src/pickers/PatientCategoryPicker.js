@@ -14,6 +14,7 @@ class PatientCategoryPicker extends Component {
       result[cat] = !!(value & cat);
     });
     return result;
+
   }
 
   _onChangeCategory = (cat) => {
