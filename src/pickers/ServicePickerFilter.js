@@ -63,6 +63,7 @@ const ServicePickerFilter = (props) => {
 
   let services = data?.medicalServicesStr?.edges.map((edge) => edge.node) ?? [];
   let options = [];
+  console.log(claimProgram);
 
   if (claimProgram != '' && claimProgram != undefined && claimProgram != null) {
     services.forEach(function (service) {
@@ -79,6 +80,9 @@ const ServicePickerFilter = (props) => {
       }
     })
   }
+
+  console.log(services);
+  console.log(options)
 
 
   return (
