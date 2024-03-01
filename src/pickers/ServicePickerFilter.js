@@ -24,7 +24,7 @@ const ServicePickerFilter = (props) => {
 
   const { isLoading, data, error } = useGraphqlQuery(
     `query ($searchString: String, $pricelistUuid: UUID, $date: Date) {
-      medicalServicesStr(str: $searchString, first: 20, pricelistUuid: $pricelistUuid, date: $date) {
+      medicalServicesStr(str: $searchString, pricelistUuid: $pricelistUuid, date: $date) {
         edges {
           node {
             id name code price packagetype
@@ -63,7 +63,6 @@ const ServicePickerFilter = (props) => {
 
   let services = data?.medicalServicesStr?.edges.map((edge) => edge.node) ?? [];
   let options = [];
-  console.log(claimProgram);
 
   if (claimProgram != '' && claimProgram != undefined && claimProgram != null) {
     services.forEach(function (service) {
@@ -80,9 +79,6 @@ const ServicePickerFilter = (props) => {
       }
     })
   }
-
-  console.log(services);
-  console.log(options)
 
 
   return (
