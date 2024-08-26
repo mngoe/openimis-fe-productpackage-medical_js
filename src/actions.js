@@ -42,6 +42,7 @@ const MEDICAL_SERVICE_FULL_PROJECTION = (mm) => [
   "price",
   "careType",
   "uuid",
+  "healthFacility{id, name, code}",
   "frequency",
   "patientCategory",
   "validityFrom",
@@ -94,6 +95,7 @@ export function formatDetails(type, details) {
 }
 
 export function formatMedicalItemOrServiceGQL(mm, ms) {
+  console.log('ms obtenu ', ms)
   const req = `
     ${ms.uuid ? `uuid: "${ms.uuid}"` : ""}
     ${ms.code ? `code: "${ms.code}"` : ""}
@@ -110,10 +112,12 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.package ? `package: "${formatGQLString(ms.package)}"` : ""}
     ${ms.packagetype ? `packagetype: "${formatGQLString(ms.packagetype)}"` : ""}
     ${ms.packagetype ?`manualPrice: "${formatGQLBoolean(ms.manualPrice)}"` : "" }
+    ${ms.healthFacility ?`healthFacility: ${decodeId(ms.healthFacility.id)}` : "" }
     ${formatDetails("service", ms.serviceserviceSet)}
     ${formatDetails("item", ms.servicesLinked)}
     ${ms.program ? `program: ${ms.program.idProgram}`:""}
   `;
+  console.log(" request obtain ", req)
   return req;
 }
 
