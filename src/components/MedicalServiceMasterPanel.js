@@ -178,7 +178,6 @@ class MedicalServiceMasterPanel extends FormPanel {
               placeholder={formatMessage(intl, "location", "HealthFacilityPicker.placeholder")}
               value={edited ? edited.healthFacility : ""}
               readOnly={readOnly}
-              required={true}
               onChange={(healthFacility) => this.updateAttribute("healthFacility", healthFacility)}
             />
           </Grid>
