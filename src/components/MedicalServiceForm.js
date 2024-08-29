@@ -190,7 +190,6 @@ class MedicalServiceForm extends Component {
     return this.state.medicalService &&
       this.state.medicalService.code &&
       this.state.medicalService.name &&
-      this.state.medicalService.healthFacility &&
       this.state.medicalService.type &&
       !isNaN(this.state.medicalService.price) &&
       this.state.medicalService.level &&
