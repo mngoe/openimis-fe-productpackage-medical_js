@@ -43,6 +43,7 @@ const MEDICAL_SERVICE_FULL_PROJECTION = (mm) => [
   "uuid",
   "frequency",
   "patientCategory",
+  "healthFacility{id, name, code}",
   "validityFrom",
   "validityTo",
   "level",
@@ -108,6 +109,7 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.package ? `package: "${formatGQLString(ms.package)}"` : ""}
     ${ms.packagetype ? `packagetype: "${formatGQLString(ms.packagetype)}"` : ""}
     ${ms.packagetype ?`manualPrice: "${formatGQLBoolean(ms.manualPrice)}"` : "" }
+    ${ms.healthFacility ?`healthFacility: ${decodeId(ms.healthFacility.id)}` : "" }
     ${formatDetails("service", ms.serviceserviceSet)}
     ${formatDetails("item", ms.servicesLinked)}
     ${ms.program ? `program: ${ms.program.idProgram}`:""}

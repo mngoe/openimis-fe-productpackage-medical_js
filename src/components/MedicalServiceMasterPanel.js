@@ -170,6 +170,17 @@ class MedicalServiceMasterPanel extends FormPanel {
               onChange={(program) => this.updateAttribute("program", program)}
             />
           </Grid>
+          <Grid item xs={3} className={classes.item}>
+            <PublishedComponent
+              pubRef="location.HealthFacilityPicker"
+              name="location"
+              label={formatMessage(intl, "location", "HealthFacilityPicker.label")}
+              placeholder={formatMessage(intl, "location", "HealthFacilityPicker.placeholder")}
+              value={edited ? edited.healthFacility : ""}
+              readOnly={readOnly}
+              onChange={(healthFacility) => this.updateAttribute("healthFacility", healthFacility)}
+            />
+          </Grid>
         </Grid>
         <Grid container className={classes.item}>
           <Grid item xs={4} className={classes.item}>
