@@ -22,7 +22,7 @@ const ServicePickerFilter = (props) => {
   } = props;
   const [searchString, setSearchString] = useState(null);
   const { formatMessage } = useTranslations("medical");
-  const healthFacilityId = parseInt(decodeId(healthFacility.id))
+  const healthFacilityId = !!healthFacility && !!healthFacility.id && parseInt(decodeId(healthFacility.id))
   const { isLoading, data, error } = useGraphqlQuery(
     `query ($searchString: String, $pricelistUuid: UUID, $date: Date, $healthFacilityId: ID ) {
       medicalServicesStr(str: $searchString, pricelistUuid: $pricelistUuid, date: $date,  healthFacilityId: $healthFacilityId) {
