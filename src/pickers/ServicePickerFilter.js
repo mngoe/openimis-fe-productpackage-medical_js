@@ -23,8 +23,8 @@ const ServicePickerFilter = (props) => {
   } = props;
   const [searchString, setSearchString] = useState(null);
   const { formatMessage } = useTranslations("medical");
-  const healthFacilityId = parseInt(decodeId(healthFacility?.id))
-  console.log('health facility ', healthFacility)
+  const healthFacilityId = parseInt(decodeId(healthFacility.id))
+  console.log('health facility ', healthFacility.id)
   const { isLoading, data, error } = useGraphqlQuery(
     `query ($searchString: String, $pricelistUuid: UUID, $date: Date, $healthFacilityId: ID ) {
       medicalServicesStr(str: $searchString, pricelistUuid: $pricelistUuid, date: $date , healthFacilityId: $healthFacilityId) {
@@ -63,7 +63,7 @@ const ServicePickerFilter = (props) => {
     { pricelistUuid, searchString, date: toISODate(date), healthFacilityId },
     { skip: true },
   );
-    console.log('data received ', data)
+  console.log('data received ', data)
   let services = data?.medicalServicesStr?.edges.map((edge) => edge.node) ?? [];
   let options = [];
 
