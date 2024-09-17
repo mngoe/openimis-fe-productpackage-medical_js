@@ -30,7 +30,8 @@ const styles = (theme) => ({
 class MedicalServiceMasterPanel extends FormPanel {
   constructor(props) {
     super(props);
-    this.serviceCodeMaxlength = props.modulesManager.getConf("fe-medical", "medicalserviceForm.serviceCodeMaxlength", SERVICE_CODE_MAX_LENGTH);
+    this.serviceCodeMaxlength = props.modulesManager.getConf("fe-medical-service", "medicalserviceForm.serviceCodeMaxlength", SERVICE_CODE_MAX_LENGTH);
+    //console.log("serviceCodeMaxlength:", this.serviceCodeMaxlength);
   }
   shouldValidate = (inputValue) => {
     const { savedServiceCode } = this.props;
