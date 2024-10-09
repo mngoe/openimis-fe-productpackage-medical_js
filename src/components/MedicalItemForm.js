@@ -148,7 +148,7 @@ class MedicalItemForm extends Component {
   };
 
   canSave = () => {
-    const configuredItemCodeMaxLength = this.props.modulesManager.getConf("fe-medical-item", "medicalitemForm.itemCodeMaxlength", ITEM_CODE_MAX_LENGTH);
+    const configuredItemCodeMaxLength = this.props.modulesManager.getConf("fe-medical", "medicalitemForm.itemCodeMaxlength", ITEM_CODE_MAX_LENGTH);
     return (
       this.state.medicalItem &&
       this.state.medicalItem.code &&

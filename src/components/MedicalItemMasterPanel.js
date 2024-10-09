@@ -29,7 +29,7 @@ const styles = (theme) => ({
 class MedicalItemMasterPanel extends FormPanel {
   constructor(props) {
     super(props);
-    this.itemCodeMaxlength = props.modulesManager.getConf("fe-medical-item", "medicalitemForm.itemCodeMaxlength", ITEM_CODE_MAX_LENGTH);
+    this.itemCodeMaxlength = props.modulesManager.getConf("fe-medical", "medicalitemForm.itemCodeMaxlength", ITEM_CODE_MAX_LENGTH);
     //console.log("itemCodeMaxlength:", this.itemCodeMaxlength);
   }
   shouldValidate = (inputValue) => {

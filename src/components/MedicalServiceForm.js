@@ -149,7 +149,7 @@ class MedicalServiceForm extends Component {
   };
 
   canSave = () => {
-     const configuredServiceCodeMaxLength = this.props.modulesManager.getConf("fe-medical-service", "medicalserviceForm.serviceCodeMaxlength", SERVICE_CODE_MAX_LENGTH);
+     const configuredServiceCodeMaxLength = this.props.modulesManager.getConf("fe-medical", "medicalserviceForm.serviceCodeMaxlength", SERVICE_CODE_MAX_LENGTH);
     return (
       this.state.medicalService &&
       this.state.medicalService.code &&
