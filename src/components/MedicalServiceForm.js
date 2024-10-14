@@ -31,6 +31,7 @@ import {
 } from "../actions";
 import { RIGHT_MEDICALSERVICES, SERVICE_CODE_MAX_LENGTH } from "../constants";
 import MedicalServiceMasterPanel from "./MedicalServiceMasterPanel";
+import { validateCategories } from "../utils";
 
 const styles = (theme) => ({
   lockedPage: theme.page.locked,
@@ -49,24 +50,22 @@ class MedicalItemsPanel extends Component {
 }
 
 class MedicalServiceForm extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      lockNew: false,
-      reset: 0,
-      medicalService: this.newMedicalService(),
-      newMedicalService: true,
-      confirmedAction: null,
-      totalPrice: 0,
-      sumItems:0,
-      sumServices:0,
-      manualPrice: false
-    };
-  }
 
   getTotalPrice = () => {
     return this.state.totalPrice;
   }
+  state = {
+    lockNew: false,
+    reset: 0,
+    medicalService: this.newMedicalService(),
+    newMedicalService: true,
+    confirmedAction: null,
+    isSaved: false,
+    totalPrice: 0,
+    sumItems: 0,
+    sumServices: 0,
+    manualPrice: false
+  };
 
   newMedicalService() {
     return { patientCategory: 15 };
@@ -138,52 +137,64 @@ class MedicalServiceForm extends Component {
     );
   };
 
-  reload = () => {
-    const { clientMutationId, medicalServiceId } = this.props.mutation;
-    if (clientMutationId && !medicalServiceId) {
-      this.props.fetchMedicalServiceMutation(this.props.modulesManager, clientMutationId).then((res) => {
-        const mutationLogs = parseData(res.payload.data.mutationLogs);
-        if (
-          mutationLogs &&
-          mutationLogs[0] &&
-          mutationLogs[0].medicalServices &&
-          mutationLogs[0].medicalServices[0] &&
-          mutationLogs[0].medicalServices[0].coreUser
-        ) {
-          const { id } = parseData(res.payload.data.mutationLogs)[0].users[0].coreUser;
-          if (id) {
-            historyPush(this.props.modulesManager, this.props.history, "medical.medicalServiceOverview", [id]);
-          }
-        }
-      });
-    } else {
-      this.props.fetchMedicalService(this.props.modulesManager, medicalServiceId, clientMutationId);
+  reload = async () => {
+    const { modulesManager, history, mutation, fetchMedicalServiceMutation, medicalServiceId, fetchMedicalService } =
+      this.props;
+    const { isSaved } = this.state;
+
+    if (medicalServiceId) {
+      try {
+        await fetchMedicalService(modulesManager, medicalServiceId);
+      } catch (error) {
+        console.error(`[RELOAD_MEDICAL_SERVICE]: Fetching medical service details failed. ${error}`);
+      }
+      return;
     }
+
+    if (isSaved) {
+      try {
+        const { clientMutationId } = mutation;
+        const response = await fetchMedicalServiceMutation(modulesManager, clientMutationId);
+        const createdMedicalServiceUuid = parseData(response.payload.data.medicalServices)[0].uuid;
+
+        historyPush(modulesManager, history, "medical.medicalServiceOverview", [createdMedicalServiceUuid]);
+      } catch (error) {
+        console.error(`[RELOAD_MEDICAL_SERVICE]: Error fetching medical service mutation: ${error}`);
+      }
+    }
+
+    this.setState({
+      lockNew: false,
+      reset: 0,
+      medicalService: this.newMedicalService(),
+      newMedicalService: true,
+      confirmedAction: null,
+    });
   };
 
   priceCalcul = () => {
 
-    let sumItem = 0 ;
-    let sumService = 0 ;
-    if(this.state.medicalService.servicesLinked != undefined){
+    let sumItem = 0;
+    let sumService = 0;
+    if (this.state.medicalService.servicesLinked != undefined) {
       this.state.medicalService.servicesLinked.forEach((item) => {
-        if(item.priceAsked != undefined){
-          sumItem += parseFloat(item.priceAsked)*parseFloat(item.qtyProvided);
+        if (item.priceAsked != undefined) {
+          sumItem += parseFloat(item.priceAsked) * parseFloat(item.qtyProvided);
         }
       });
     }
 
-    if(this.state.medicalService.serviceserviceSet != undefined){
+    if (this.state.medicalService.serviceserviceSet != undefined) {
       this.state.medicalService.serviceserviceSet.forEach((service) => {
-        if(service.priceAsked != undefined){
-          sumService += parseFloat(service.priceAsked)*parseFloat(service.qtyProvided);
+        if (service.priceAsked != undefined) {
+          sumService += parseFloat(service.priceAsked) * parseFloat(service.qtyProvided);
         }
-      });      
+      });
     }
-    this.state.totalPrice = sumItem+sumService;
+    this.state.totalPrice = sumItem + sumService;
 
-    if(this.state.medicalService.packagetype!="S" && this.state.medicalService.packagetype!=null){
-      if(this.state.medicalService.manualPrice != true){
+    if (this.state.medicalService.packagetype != "S" && this.state.medicalService.packagetype != null) {
+      if (this.state.medicalService.manualPrice != true) {
         this.state.medicalService.price = this.state.totalPrice;
       }
     }
@@ -194,27 +205,23 @@ class MedicalServiceForm extends Component {
     console.log(this.state);
 
     return this.state.medicalService &&
-    this.state.medicalService.code &&
-    this.state.medicalService.code.length <= SERVICE_CODE_MAX_LENGTH &&
-    this.state.medicalService.name &&
-    this.state.medicalService.type &&
-    !isNaN(this.state.medicalService.price) &&
-    this.state.medicalService.level &&
-    this.state.medicalService.packagetype &&
-    this.state.medicalService.price &&
-    this.state.medicalService.careType &&
-    !this.state.medicalService.validityTo &&
-    this.props.isServiceValid;
+      this.state.medicalService.code &&
+      this.state.medicalService.code.length <= SERVICE_CODE_MAX_LENGTH &&
+      this.state.medicalService.name &&
+      this.state.medicalService.type &&
+      !isNaN(this.state.medicalService.price) &&
+      this.state.medicalService.level &&
+      this.state.medicalService.packagetype &&
+      this.state.medicalService.price &&
+      this.state.medicalService.careType &&
+      validateCategories(this.state.medicalService.patientCategory) &&
+      !this.state.medicalService.validityTo &&
+      this.props.isServiceValid;
 
   }
 
   save = (medicalService) => {
-    console.log("Save :");
-    console.log(medicalService);
-    this.setState(
-      { lockNew: !medicalService.id }, // avoid duplicates
-      (e) => this.props.save(medicalService),
-    );
+    this.setState({ lockNew: !medicalService?.id, isSaved: true }, (e) => this.props.save(medicalService));
   };
 
   onEditedChanged = (medicalService) => {
@@ -246,7 +253,7 @@ class MedicalServiceForm extends Component {
       {
         doIt: this.reload,
         icon: <ReplayIcon />,
-        onlyIfDirty: !readOnly,
+        onlyIfDirty: !readOnly && !this.state.isSaved,
       },
     ];
     const shouldBeLocked = lockNew || medicalService?.validityTo;
@@ -257,32 +264,32 @@ class MedicalServiceForm extends Component {
         <ErrorBoundary>
           {((!!fetchedMedicalService && !!medicalService && medicalService.uuid === medicalServiceId) ||
             !medicalServiceId) && (
-            <Form
-              module="medicalService"
-              title={
-                this.state.newMedicalService
-                  ? "medical.service.MedicalServiceOverview.newTitle"
-                  : "medical.service.MedicalServiceOverview.title"
-              }
-              edited_id={medicalServiceId}
-              edited={medicalService}
-              reset={reset}
-              back={back}
-              add={!!add && !this.state.newMedicalService ? this.add : null}
-              readOnly={readOnly || lockNew || (!!medicalService && !!medicalService.validityTo)}
-              actions={actions}
-              overview={overview}
-              HeadPanel={MedicalServiceMasterPanel}
-              Panels={[MedicalServicesPanel,MedicalItemsPanel]}
-              medicalService={medicalService}
-              onEditedChanged={this.onEditedChanged}
-              priceTotal={this.state.totalPrice}
-              canSave={this.canSave}
-              save={save ? this.save : null}
-              openDirty={save}
-              onActionToConfirm={this.onActionToConfirm}
-            />
-          )}
+              <Form
+                module="medicalService"
+                title={
+                  this.state.newMedicalService
+                    ? "medical.service.MedicalServiceOverview.newTitle"
+                    : "medical.service.MedicalServiceOverview.title"
+                }
+                edited_id={medicalServiceId}
+                edited={medicalService}
+                reset={reset}
+                back={back}
+                add={!!add && !this.state.newMedicalService ? this.add : null}
+                readOnly={readOnly || lockNew || (!!medicalService && !!medicalService.validityTo)}
+                actions={actions}
+                overview={overview}
+                HeadPanel={MedicalServiceMasterPanel}
+                Panels={[MedicalServicesPanel, MedicalItemsPanel]}
+                medicalService={medicalService}
+                onEditedChanged={this.onEditedChanged}
+                priceTotal={this.state.totalPrice}
+                canSave={this.canSave}
+                save={save ? this.save : null}
+                openDirty={save}
+                onActionToConfirm={this.onActionToConfirm}
+              />
+            )}
         </ErrorBoundary>
       </div>
     );
