@@ -26,11 +26,7 @@ const ServicePicker = (props) => {
       medicalServicesStr(str: $searchString, first: 20, pricelistUuid: $pricelistUuid, date: $date) {
         edges {
           node {
-<<<<<<< HEAD
-            id name code price packagetype
-=======
-            id name code price maximumAmount
->>>>>>> ca219aa960aa1d6d8b3f835a3384c232614f4d2b
+            id name code price packagetype maximumAmount
             ${extraFragment ?? ""}
             serviceserviceSet{
               service{
