@@ -29,6 +29,7 @@ import {
 import MedicalChildPanel from "./MedicalChildPanel";
 import { RIGHT_MEDICALSERVICES, SERVICE_CODE_MAX_LENGTH } from "../constants";
 import MedicalServiceMasterPanel from "./MedicalServiceMasterPanel";
+import { validateCategories } from "../utils";
 
 const styles = (theme) => ({
   lockedPage: theme.page.locked,
@@ -47,6 +48,7 @@ class MedicalServiceForm extends Component {
     medicalService: this.newMedicalService(),
     newMedicalService: true,
     confirmedAction: null,
+    isSaved: false,
   };
 
   newMedicalService() {
@@ -119,27 +121,39 @@ class MedicalServiceForm extends Component {
     );
   };
 
-  reload = () => {
-    const { clientMutationId, medicalServiceId } = this.props.mutation;
-    if (clientMutationId && !medicalServiceId) {
-      this.props.fetchMedicalServiceMutation(this.props.modulesManager, clientMutationId).then((res) => {
-        const mutationLogs = parseData(res.payload.data.mutationLogs);
-        if (
-          mutationLogs &&
-          mutationLogs[0] &&
-          mutationLogs[0].medicalServices &&
-          mutationLogs[0].medicalServices[0] &&
-          mutationLogs[0].medicalServices[0].coreUser
-        ) {
-          const { id } = parseData(res.payload.data.mutationLogs)[0].users[0].coreUser;
-          if (id) {
-            historyPush(this.props.modulesManager, this.props.history, "medical.medicalServiceOverview", [id]);
-          }
-        }
-      });
-    } else {
-      this.props.fetchMedicalService(this.props.modulesManager, medicalServiceId, clientMutationId);
+  reload = async () => {
+    const { modulesManager, history, mutation, fetchMedicalServiceMutation, medicalServiceId, fetchMedicalService } =
+      this.props;
+    const { isSaved } = this.state;
+
+    if (medicalServiceId) {
+      try {
+        await fetchMedicalService(modulesManager, medicalServiceId);
+      } catch (error) {
+        console.error(`[RELOAD_MEDICAL_SERVICE]: Fetching medical service details failed. ${error}`);
+      }
+      return;
     }
+
+    if (isSaved) {
+      try {
+        const { clientMutationId } = mutation;
+        const response = await fetchMedicalServiceMutation(modulesManager, clientMutationId);
+        const createdMedicalServiceUuid = parseData(response.payload.data.medicalServices)[0].uuid;
+
+        historyPush(modulesManager, history, "medical.medicalServiceOverview", [createdMedicalServiceUuid]);
+      } catch (error) {
+        console.error(`[RELOAD_MEDICAL_SERVICE]: Error fetching medical service mutation: ${error}`);
+      }
+    }
+
+    this.setState({
+      lockNew: false,
+      reset: 0,
+      medicalService: this.newMedicalService(),
+      newMedicalService: true,
+      confirmedAction: null,
+    });
   };
 
   canSave = () =>
@@ -151,13 +165,12 @@ class MedicalServiceForm extends Component {
     this.state.medicalService.level &&
     this.state.medicalService.price &&
     this.state.medicalService.careType &&
+    validateCategories(this.state.medicalService.patientCategory) &&
+    !this.state.medicalService.validityTo &&
     this.props.isServiceValid;
 
   save = (medicalService) => {
-    this.setState(
-      { lockNew: !medicalService.id }, // avoid duplicates
-      (e) => this.props.save(medicalService),
-    );
+    this.setState({ lockNew: !medicalService?.id, isSaved: true }, (e) => this.props.save(medicalService));
   };
 
   onEditedChanged = (medicalService) => {
@@ -188,11 +201,12 @@ class MedicalServiceForm extends Component {
       {
         doIt: this.reload,
         icon: <ReplayIcon />,
-        onlyIfDirty: !readOnly,
+        onlyIfDirty: !readOnly && !this.state.isSaved,
       },
     ];
+    const shouldBeLocked = lockNew || medicalService?.validityTo;
     return (
-      <div className={lockNew ? classes.lockedPage : null}>
+      <div className={shouldBeLocked ? classes.lockedPage : null}>
         <Helmet title={formatMessageWithValues(this.props.intl, "medical.service", "MedicalServiceOverview.title")} />
         <ProgressOrError progress={fetchingMedicalService} error={errorMedicalService} />
         <ErrorBoundary>
