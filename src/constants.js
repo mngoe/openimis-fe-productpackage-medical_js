@@ -19,10 +19,10 @@ export const SERVICE_TYPE_CURATIVE = "C";
 export const SERVICE_TYPES = [SERVICE_TYPE_PREVENTATIVE, SERVICE_TYPE_CURATIVE];
 
 
-export const SERVICE_TYPE_PP_N = "N";
+export const SERVICE_TYPE_PP_S = "S";
 export const SERVICE_TYPE_PP_P = "P";
 export const SERVICE_TYPE_PP_F = "F";
-export const SERVICE_TYPES_PP = [SERVICE_TYPE_PP_P, SERVICE_TYPE_PP_F];
+export const SERVICE_TYPES_PP = [SERVICE_TYPE_PP_S, SERVICE_TYPE_PP_P, SERVICE_TYPE_PP_F];
 
 
 export const ITEM_TYPE_DRUG = "D";
@@ -79,5 +79,6 @@ export const PATIENT_CATEGORIES = [
   PATIENT_CATEGORY_MASK_MINOR,
 ];
 
+export const MANUAL_PRICE = [ 0, 1 ];
 export const ITEMS_MODULE_NAME = "medicalItem";
 export const SERVICES_MODULE_NAME = "medicalService";
