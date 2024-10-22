@@ -14,6 +14,7 @@ import {
   FormPanel,
   PublishedComponent,
   TextInput,
+  NumberInput,
   ValidatedTextInput,
   withHistory,
   withModulesManager,
@@ -150,23 +151,18 @@ class MedicalServiceMasterPanel extends FormPanel {
               onChange={(p) => this.updateAttribute("level", p)}
             />
           </Grid>
-          {this.showManual && <Grid item xs={2} className={classes.item}>
-            <FormControlLabel
-              key={"lblManualPrice"}
-              control={
-                <Checkbox
-                  color="primary"
-                  key={"lblManualPriceCheck"}
-                  name={`isManualPrice`}
-                  checked={this.state.isManualPrice}
-                  onChange={this.changeManual}
-                />
-              }
-              label={formatMessage(intl, "medical", "manualPrice")}
+          <Grid item xs={2} className={classes.item}>
+            <NumberInput
+              min={0}
+              module="admin"
+              label="medical.service.maximumAmount"
+              name="maximumAmount"
+              readOnly={readOnly}
+              value={edited?.maximumAmount ?? ""}
+              onChange={(maximumAmount) => this.updateAttributes({ maximumAmount })}
             />
           </Grid>
-          }
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={4} className={classes.item}>
             <AmountInput
               module="admin"
               label="medical.service.price"
