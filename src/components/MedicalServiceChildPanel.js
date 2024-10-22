@@ -20,13 +20,11 @@ import { Paper, Box } from "@material-ui/core";
 import _ from "lodash";
 import { fetchMedicalService, fetchMedicalServices } from "../actions"
 
-import { claimedAmount, approvedAmount } from "../helpers/amounts";
-
 const styles = (theme) => ({
   paper: theme.paper.paper,
 });
 
-class MedicalChildPanel extends Component {
+class MedicalServiceChildPanel extends Component {
   state = {
     data: [],
   };
@@ -44,12 +42,12 @@ class MedicalChildPanel extends Component {
 
   initData = () => {
     let data = [];
-    if (!!this.props.edited[`${this.props.type}s`]) {
-      data = this.props.edited[`${this.props.type}s`] || [];
+    if (!!this.props.edited[`serviceserviceSet`]) {
+      data = this.props.edited['serviceserviceSet'] || [];
     }
-    data.push({});
-    console.log("initData");
-    console.log(data);
+    if (!_.isEqual(data[data.length - 1], {})) {
+      data.push({});
+    }
     return data;
   };
 
@@ -66,8 +64,8 @@ class MedicalChildPanel extends Component {
       this.setState({ data, reset: this.state.reset + 1 });
     } else if (
       prevProps.reset !== this.props.reset ||
-      (!!this.props.edited[`${this.props.type}s`] &&
-        !_.isEqual(prevProps.edited[`${this.props.type}s`], this.props.edited[`${this.props.type}s`]))
+      (!!this.props.edited[`serviceserviceSet`] &&
+        !_.isEqual(prevProps.edited[`serviceserviceSet`], this.props.edited[`serviceserviceSet`]))
     ) {
       this.setState({
         data: this.initData(),
@@ -86,23 +84,23 @@ class MedicalChildPanel extends Component {
 
   _onEditedChanged = (data) => {
     let edited = { ...this.props.edited };
-    edited[`${this.props.type}s`] = data;
+    edited[`serviceserviceSet`] = data;
     this.props.onEditedChanged(edited);
   };
 
   _onChange = (idx, attr, v) => {
     let data = this._updateData(idx, [{ attr, v }]);
+    let sumItems = 0;
+    data.forEach((update) => {
+      if(!isNaN(update.priceAsked) || !isNaN(update.qtyProvided)){
+        sumItems += update.priceAsked * update.qtyProvided;
+      }
+    });
     this._onEditedChanged(data);
   };
 
   _price = (v) => {
-    let id = decodeId(v.id);
-    /*return (
-      this.props[`${this.props.type}sPricelists`][this.props.edited.healthFacility[`${this.props.type}sPricelist`].id][
-        id
-      ] || v.price
-    );
-    */
+    return v.price;
   };
 
   _onChangeItem = (idx, attr, v) => {
@@ -121,6 +119,7 @@ class MedicalChildPanel extends Component {
 
   _onDelete = (idx) => {
     const data = [...this.state.data];
+    console.log(data);
     data.splice(idx, 1);
     this._onEditedChanged(data);
   };
@@ -146,17 +145,18 @@ class MedicalChildPanel extends Component {
     ]);
     this._onEditedChanged(data);
   };
-
+  
   render() {
-    const { intl, classes, edited, type, picker, forReview, fetchingPricelist, readOnly = false } = this.props;
+    const { 
+      intl, 
+      classes, 
+      edited, 
+      type, 
+      picker, 
+      forReview, 
+      fetchingPricelist, 
+      readOnly = false } = this.props;
     if (!edited) return null;
-    /*if (!this.props.edited.healthFacility || !this.props.edited.healthFacility[`${this.props.type}sPricelist`]?.id) {
-      return (
-        <Paper className={classes.paper}>
-          <Error error={{ message: formatMessage(intl, "claim", `${this.props.type}sPricelist.missing`) }} />
-        </Paper>
-      );
-    }*/
 
     let preHeaders = [
       "\u200b",
@@ -170,7 +170,7 @@ class MedicalChildPanel extends Component {
       `edit.${type}s.price`,
     ];
 
-    if (this.props.medicalService.typePP =="F") {
+    if (this.props.medicalService.packagetype =="F") {
       headers[2]=`edit.${type}s.ceiling`
     }
 
@@ -181,9 +181,8 @@ class MedicalChildPanel extends Component {
             readOnly={!!forReview || readOnly}
             pubRef={picker}
             withLabel={false}
-            value={i[type]}
+            value={i.service}
             fullWidth
-            //pricelistUuid={edited.healthFacility[`${this.props.type}sPricelist`].uuid}
             date={edited.dateClaimed}
             onChange={(v) => this._onChangeItem(idx, type, v)}
           />
@@ -213,11 +212,9 @@ class MedicalChildPanel extends Component {
       );
     }
     let header = formatMessage(intl, "claim", `edit.${this.props.type}s.title`);
-    if (fetchingPricelist) {
-      header += formatMessage(intl, "claim", `edit.${this.props.type}s.fetchingPricelist`);
-    }
+    
 
-    if(this.props.medicalService.typePP){
+    if(this.props.medicalService.packagetype=="P" || this.props.medicalService.packagetype=="F" ){
       return (
         <Paper className={classes.paper}>
           <Table
@@ -227,7 +224,7 @@ class MedicalChildPanel extends Component {
             headers={headers}
             itemFormatters={itemFormatters}
             items={!fetchingPricelist ? this.state.data : []}
-            onDelete={!forReview && !readOnly && this._onDelete}
+            onDelete={this._onDelete}
           />
         </Paper>
       );
@@ -245,4 +242,4 @@ const mapStateToProps = (state, props) => ({
 });
 
 
-export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps)(MedicalChildPanel)))));
+export default withModulesManager(injectIntl(withTheme(withStyles(styles)(connect(mapStateToProps)(MedicalServiceChildPanel)))));
