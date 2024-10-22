@@ -1,4 +1,5 @@
 import messages_en from "./translations/en.json";
+import messages_fr from "./translations/fr.json";
 import reducer from "./reducer";
 import DiagnosisPicker from "./pickers/DiagnosisPicker";
 import ItemPicker from "./pickers/ItemPicker";
@@ -28,7 +29,10 @@ const ROUTE_ADMIN_MEDICAL_ITEMS_OVERVIEW = "medical/medicalItems/overview";
 const ROUTE_ADMIN_MEDICAL_ITEMS_NEW = "medical/medicalItems/new";
 
 const DEFAULT_CONFIG = {
-  "translations": [{ key: "en", messages: messages_en }],
+  "translations": [
+    { key: "en", messages: messages_en },
+    { key: "fr", messages: messages_fr },
+  ],
   "reducers": [{ key: "medical", reducer }],
   "core.Router": [
     { path: ROUTE_ADMIN_MEDICAL_SERVICES, component: MedicalServicesPage },

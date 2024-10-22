@@ -94,12 +94,12 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.code ? `code: "${ms.code}"` : ""}
     ${ms.name ? `name: "${formatGQLString(ms.name)}"` : ""}
     ${ms.type ? `type: "${formatGQLString(ms.type)}"` : ""}
-    ${!isNaN(ms.price) ? `price: "${ms.price}"` : ""}
+    ${ms.price ? `price: "${ms.price}"` : ""}
     ${ms.quantity ? `quantity: "${ms.quantity}"` : ""}
     ${ms.maximumAmount ? `maximumAmount: "${ms.maximumAmount}"` : ""}
     ${ms.careType ? `careType: "${formatGQLString(ms.careType)}"` : ""}
     ${ms.frequency ? `frequency: "${ms.frequency}"` : ""}
-    ${`patientCategory: ${ms.patientCategory}`}
+    ${ms.patientCategory ? `patientCategory: ${ms.patientCategory}` : ""}
     ${ms.category && ms.category !== " " ? `category: "${formatGQLString(ms.category)}"` : ""}
     ${ms.level ? `level: "${formatGQLString(ms.level)}"` : ""}
     ${ms.package ? `package: "${formatGQLString(ms.package)}"` : ""}
@@ -231,7 +231,7 @@ export function deleteMedicalItem(mm, medicalItem, clientMutationLabel) {
 export function fetchMedicalService(mm, medicalServiceId, clientMutationId) {
   const filters = [];
   if (medicalServiceId) {
-    filters.push(`uuid: "${formatGQLString(medicalServiceId)}", showHistory: true`);
+    filters.push(`uuid: "${formatGQLString(medicalServiceId)}"`);
   } else if (clientMutationId) {
     filters.push(`clientMutationId: "${formatGQLString(clientMutationId)}"`);
   }
@@ -259,7 +259,7 @@ export function fetchMedicalServices(mm) {
 export function fetchMedicalItem(mm, medicalItemId, clientMutationId) {
   const filters = [];
   if (medicalItemId) {
-    filters.push(`uuid: "${formatGQLString(medicalItemId)}", showHistory: true`);
+    filters.push(`uuid: "${formatGQLString(medicalItemId)}"`);
   } else if (clientMutationId) {
     filters.push(`clientMutationId: "${formatGQLString(clientMutationId)}"`);
   }
