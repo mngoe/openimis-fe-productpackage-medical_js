@@ -1,4 +1,4 @@
-import { formatGQLString, formatMutation, formatPageQuery, formatPageQueryWithCount, graphql, graphqlWithVariables } from "@openimis/fe-core";
+import { formatGQLString, formatMutation, formatPageQuery, formatPageQueryWithCount, graphql, graphqlWithVariables, decodeId } from "@openimis/fe-core";
 import _ from "lodash";
 
 const MEDICAL_SERVICES_SUMMARY_PROJECTION = [
