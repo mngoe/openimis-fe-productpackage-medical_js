@@ -43,18 +43,18 @@ class MedicalServiceMasterPanel extends FormPanel {
   }
 
   showCheckboxManual= (pSelection) => {
-    if(pSelection!=null && pSelection!="S"){
+    if(pSelection!=null){
       this.showManual = true;
       this.setState(
         {
-          readOnlyPrice : 1
+          readOnlyPrice : true
         }
       );
     }else{
       this.showManual = false;
       this.setState(
         {
-          readOnlyPrice : 0
+          readOnlyPrice : false
         }
       );
     }
@@ -63,7 +63,7 @@ class MedicalServiceMasterPanel extends FormPanel {
   changeManual =  () => {
     this.setState(
       {
-        readOnlyPrice : !this.state.readOnlyPrice,
+        readOnlyPrice : !this.state.readOnlyPrice
       }
     );
   };
