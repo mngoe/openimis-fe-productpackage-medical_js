@@ -62,6 +62,13 @@ const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
   "package",
 ];
 
+function formatGQLBoolean(value){
+  if(value==true){
+    return "1";
+  }
+  return "0";
+}
+
 export function formatDetail(type, detail) {
   return `{
     ${detail.id !== undefined && detail.id !== null ? `id: ${detail.id}` : ""}
