@@ -25,6 +25,7 @@ import MedicalItemChildPanel from "./MedicalItemChildPanel";
 import {
   createMedicalService,
   fetchMedicalService,
+  fetchMedicalServices,
   fetchMedicalServiceMutation,
   newMedicalService,
   clearServiceForm,
