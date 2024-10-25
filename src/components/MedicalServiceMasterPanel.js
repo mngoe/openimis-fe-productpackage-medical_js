@@ -17,7 +17,7 @@ import {
   withModulesManager,
 } from "@openimis/fe-core";
 import { medicalServicesValidationCheck, medicalServicesValidationClear, medicalServicesSetValid } from "../actions";
-import { SERVICE_CODE_MAX_LENGTH, SERVICE_TYPE_PP_F } from "../constants";
+import { SERVICE_CODE_MAX_LENGTH, SERVICE_TYPE_PP_F, SERVICE_TYPE_PP_S } from "../constants";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -32,11 +32,11 @@ class MedicalServiceMasterPanel extends FormPanel {
   constructor(props) {
     super(props);
     this.state = {
-      readOnlyPrice : props.medicalService.packagetype=="S"? 0 : !props.medicalService.manualPrice,
+      readOnlyPrice : props.medicalService.packagetype==SERVICE_TYPE_PP_S? 0 : !props.medicalService.manualPrice,
     }
 
     if(this.props.edited){
-      if(this.props.edited.packagetype !=null && this.props.edited.packagetype!="S"){
+      if(this.props.edited.packagetype !=null && this.props.edited.packagetype!=SERVICE_TYPE_PP_S){
         this.showManual = true;
       }
     }
