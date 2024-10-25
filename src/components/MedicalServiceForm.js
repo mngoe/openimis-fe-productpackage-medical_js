@@ -25,7 +25,6 @@ import MedicalItemChildPanel from "./MedicalItemChildPanel";
 import {
   createMedicalService,
   fetchMedicalService,
-  fetchMedicalServices,
   fetchMedicalServiceMutation,
   newMedicalService,
   clearServiceForm,
@@ -73,7 +72,6 @@ class MedicalServiceForm extends Component {
   }
 
   componentDidMount() {
-    this.props.fetchMedicalServices(this.props.modulesManager);
     if (this.props.medicalServiceId) {
       this.setState(
         (state, props) => ({ medicalServiceId: props.medicalServiceId }),
@@ -301,7 +299,6 @@ const mapStateToProps = (state) => ({
   fetchingMedicalService: state.medical.fetchingMedicalService,
   errorMedicalService: state.medical.errorMedicalService,
   fetchedMedicalService: state.medical.fetchedMedicalService,
-  fetchedMedicalServices: state.medical.fetchedMedicalServices,
   submittingMutation: state.medical.submittingMutation,
   mutation: state.medical.mutation,
   medicalService: state.medical.medicalService,
@@ -315,7 +312,6 @@ const mapDispatchToProps = (dispatch) =>
     {
       clearServiceForm,
       fetchMedicalService,
-      fetchMedicalServices,
       newMedicalService,
       createMedicalService,
       fetchMedicalServiceMutation,

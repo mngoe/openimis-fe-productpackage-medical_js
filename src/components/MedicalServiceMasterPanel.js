@@ -17,7 +17,7 @@ import {
   withModulesManager,
 } from "@openimis/fe-core";
 import { medicalServicesValidationCheck, medicalServicesValidationClear, medicalServicesSetValid } from "../actions";
-import { SERVICE_CODE_MAX_LENGTH } from "../constants";
+import { SERVICE_CODE_MAX_LENGTH, SERVICE_TYPE_PP_F } from "../constants";
 
 const styles = (theme) => ({
   tableTitle: theme.table.title,
@@ -98,7 +98,7 @@ class MedicalServiceMasterPanel extends FormPanel {
               value={edited ? edited.code : ""}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={4} className={classes.item}>
             <TextInput
               module="admin"
               label="medical.service.name"
@@ -142,7 +142,7 @@ class MedicalServiceMasterPanel extends FormPanel {
               onChange={(p) => this.updateAttribute("category", p)}
             />
           </Grid>
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={4} className={classes.item}>
             <PublishedComponent
               pubRef="medical.ServiceLevelPicker"
               withNull={false}
@@ -163,10 +163,10 @@ class MedicalServiceMasterPanel extends FormPanel {
               onChange={(maximumAmount) => this.updateAttributes({ maximumAmount })}
             />
           </Grid>
-          <Grid item xs={4} className={classes.item}>
+          <Grid item xs={3} className={classes.item}>
             <AmountInput
               module="admin"
-              label={this.props.medicalService.packagetype=='F' ? `edit.services.ceiling` : `medical.service.price`}
+              label={this.props.medicalService.packagetype== SERVICE_TYPE_PP_F ? `edit.services.ceiling` : `medical.service.price`}
               required={!this.state.readOnlyPrice}
               name="price"
               readOnly={Boolean(edited.id) || readOnly || this.state.readOnlyPrice }
