@@ -69,6 +69,7 @@ class MedicalServiceSearcher extends Component {
     const h = [
       "medical.service.code",
       "medical.service.name",
+      "medical.service.packagetype",
       "medical.service.type",
       "medical.service.level",
       "medical.service.price",
@@ -81,6 +82,7 @@ class MedicalServiceSearcher extends Component {
   sorts = (filters) => [
     ["code", true],
     ["name", true],
+    ["packagetype", true],
     ["type", true],
     ["level", true],
     ["price", true],
@@ -118,6 +120,7 @@ class MedicalServiceSearcher extends Component {
     const formatters = [
       (ms) => ms.code,
       (ms) => ms.name,
+      (ms) => ms.packagetype,
       (ms) => ms.type,
       (ms) => ms.level,
       (ms) => ms.price,
