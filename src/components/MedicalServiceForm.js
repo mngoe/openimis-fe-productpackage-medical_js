@@ -19,6 +19,9 @@ import {
   withHistory,
   withModulesManager,
 } from "@openimis/fe-core";
+import MedicalServiceChildPanel from "./MedicalServiceChildPanel";
+import MedicalItemChildPanel from "./MedicalItemChildPanel";
+
 import {
   createMedicalService,
   fetchMedicalService,
@@ -34,7 +37,23 @@ const styles = (theme) => ({
   lockedPage: theme.page.locked,
 });
 
+class MedicalServicesPanel extends Component {
+  render() {
+    return <MedicalServiceChildPanel {...this.props} type="service" picker="medical.ServiceFilterWithoutHFPicker" />;
+  }
+}
+
+class MedicalItemsPanel extends Component {
+  render() {
+    return <MedicalItemChildPanel {...this.props} type="item" picker="medical.ItemPicker" />;
+  }
+}
+
 class MedicalServiceForm extends Component {
+
+  getTotalPrice = () => {
+    return this.state.totalPrice;
+  }
   state = {
     lockNew: false,
     reset: 0,
@@ -42,6 +61,10 @@ class MedicalServiceForm extends Component {
     newMedicalService: true,
     confirmedAction: null,
     isSaved: false,
+    totalPrice: 0,
+    sumItems: 0,
+    sumServices: 0,
+    manualPrice: false
   };
 
   newMedicalService() {
@@ -148,15 +171,46 @@ class MedicalServiceForm extends Component {
     });
   };
 
+  priceCalcul = () => {
+
+    let sumItem = 0;
+    let sumService = 0;
+    if (this.state.medicalService.servicesLinked != undefined) {
+      this.state.medicalService.servicesLinked.forEach((item) => {
+        if (item.priceAsked != undefined) {
+          sumItem += parseFloat(item.priceAsked) * parseFloat(item.qtyProvided);
+        }
+      });
+    }
+
+    if (this.state.medicalService.serviceserviceSet != undefined) {
+      this.state.medicalService.serviceserviceSet.forEach((service) => {
+        if (service.priceAsked != undefined) {
+          sumService += parseFloat(service.priceAsked) * parseFloat(service.qtyProvided);
+        }
+      });
+    }
+    this.state.totalPrice = sumItem + sumService;
+
+    if (this.state.medicalService.packagetype != "S" && this.state.medicalService.packagetype != null) {
+      if (this.state.medicalService.manualPrice != true) {
+        this.state.medicalService.price = this.state.totalPrice;
+      }
+    }
+  }
+
   canSave = () => {
-     const configuredServiceCodeMaxLength = this.props.modulesManager.getConf("fe-medical", "medicalserviceForm.serviceCodeMaxlength", SERVICE_CODE_MAX_LENGTH);
+    const configuredServiceCodeMaxLength = this.props.modulesManager.getConf("fe-medical", "medicalserviceForm.serviceCodeMaxlength", SERVICE_CODE_MAX_LENGTH);
+    this.priceCalcul();
     return (
       this.state.medicalService &&
       this.state.medicalService.code &&
       this.state.medicalService.code.length <= configuredServiceCodeMaxLength &&
       this.state.medicalService.name &&
       this.state.medicalService.type &&
+      !isNaN(this.state.medicalService.price) &&
       this.state.medicalService.level &&
+      this.state.medicalService.packagetype &&
       this.state.medicalService.price &&
       this.state.medicalService.careType &&
       validateCategories(this.state.medicalService.patientCategory) &&
@@ -171,6 +225,7 @@ class MedicalServiceForm extends Component {
   };
 
   onEditedChanged = (medicalService) => {
+    this.priceCalcul();
     this.setState({ medicalService, newMedicalService: false });
   };
 
@@ -209,30 +264,32 @@ class MedicalServiceForm extends Component {
         <ErrorBoundary>
           {((!!fetchedMedicalService && !!medicalService && medicalService.uuid === medicalServiceId) ||
             !medicalServiceId) && (
-            <Form
-              module="medicalService"
-              title={
-                this.state.newMedicalService
-                  ? "medical.service.MedicalServiceOverview.newTitle"
-                  : "medical.service.MedicalServiceOverview.title"
-              }
-              edited_id={medicalServiceId}
-              edited={medicalService}
-              reset={reset}
-              back={back}
-              add={!!add && !this.state.newMedicalService ? this.add : null}
-              readOnly={readOnly || lockNew || (!!medicalService && !!medicalService.validityTo)}
-              actions={actions}
-              overview={overview}
-              HeadPanel={MedicalServiceMasterPanel}
-              medicalService={medicalService}
-              onEditedChanged={this.onEditedChanged}
-              canSave={this.canSave}
-              save={save ? this.save : null}
-              openDirty={save}
-              onActionToConfirm={this.onActionToConfirm}
-            />
-          )}
+              <Form
+                module="medicalService"
+                title={
+                  this.state.newMedicalService
+                    ? "medical.service.MedicalServiceOverview.newTitle"
+                    : "medical.service.MedicalServiceOverview.title"
+                }
+                edited_id={medicalServiceId}
+                edited={medicalService}
+                reset={reset}
+                back={back}
+                add={!!add && !this.state.newMedicalService ? this.add : null}
+                readOnly={readOnly || lockNew || (!!medicalService && !!medicalService.validityTo)}
+                actions={actions}
+                overview={overview}
+                HeadPanel={MedicalServiceMasterPanel}
+                Panels={[MedicalServicesPanel, MedicalItemsPanel]}
+                medicalService={medicalService}
+                onEditedChanged={this.onEditedChanged}
+                priceTotal={this.state.totalPrice}
+                canSave={this.canSave}
+                save={save ? this.save : null}
+                openDirty={save}
+                onActionToConfirm={this.onActionToConfirm}
+              />
+            )}
         </ErrorBoundary>
       </div>
     );
