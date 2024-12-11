@@ -26,8 +26,28 @@ const ServicePicker = (props) => {
       medicalServicesStr(str: $searchString, first: 20, pricelistUuid: $pricelistUuid, date: $date) {
         edges {
           node {
-            id name code price
+            id name code price packagetype maximumAmount
             ${extraFragment ?? ""}
+            serviceserviceSet{
+              service{
+                id
+                code
+                name
+              }
+              priceAsked
+              qtyProvided
+              scpDate
+            }
+            servicesLinked{
+              item{
+                id
+                code
+                name
+              }
+              priceAsked
+              qtyProvided
+              pcpDate
+            }
           }
         }
       }
@@ -48,6 +68,7 @@ const ServicePicker = (props) => {
       readOnly={readOnly}
       options={data?.medicalServicesStr?.edges.map((edge) => edge.node) ?? []}
       isLoading={isLoading}
+      getOptionSelected={(option, value) => option.id === value?.id}
       value={value}
       getOptionLabel={(option) => `${option.code} ${option.name}`}
       onChange={onChange}
