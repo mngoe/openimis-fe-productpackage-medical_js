@@ -4,7 +4,8 @@ import {
   formatPageQuery,
   formatPageQueryWithCount,
   decodeId,
-  graphql
+  graphql,
+  graphqlWithVariables
 } from "@openimis/fe-core";
 import _ from "lodash";
 
@@ -15,6 +16,7 @@ const MEDICAL_SERVICES_SUMMARY_PROJECTION = [
   "packagetype",
   "type",
   "price",
+  "maximumAmount",
   "validityFrom",
   "validityTo",
   "level",
@@ -25,6 +27,7 @@ const MEDICAL_ITEMS_SUMMARY_PROJECTION = [
   "name",
   "type",
   "quantity",
+  "maximumAmount",
   "price",
   "validityFrom",
   "validityTo",
@@ -39,6 +42,7 @@ const MEDICAL_SERVICE_FULL_PROJECTION = (mm) => [
   "manualPrice",
   "type",
   "price",
+  "maximumAmount",
   "careType",
   "uuid",
   "frequency",
@@ -57,6 +61,7 @@ const MEDICAL_ITEM_FULL_PROJECTION = (mm) => [
   "name",
   "type",
   "quantity",
+  "maximumAmount",
   "price",
   "careType",
   "uuid",
@@ -101,9 +106,10 @@ export function formatMedicalItemOrServiceGQL(mm, ms) {
     ${ms.type ? `type: "${formatGQLString(ms.type)}"` : ""}
     ${!isNaN(ms.price) ? `price: "${ms.price}"` : ""}
     ${ms.quantity ? `quantity: "${ms.quantity}"` : ""}
+    ${ms.maximumAmount ? `maximumAmount: "${ms.maximumAmount}"` : ""}
     ${ms.careType ? `careType: "${formatGQLString(ms.careType)}"` : ""}
     ${ms.frequency ? `frequency: "${ms.frequency}"` : ""}
-    ${ms.patientCategory ? `patientCategory: ${ms.patientCategory}` : ""}
+    ${`patientCategory: ${ms.patientCategory}`}
     ${ms.category && ms.category !== " " ? `category: "${formatGQLString(ms.category)}"` : ""}
     ${ms.level ? `level: "${formatGQLString(ms.level)}"` : ""}
     ${ms.package ? `package: "${formatGQLString(ms.package)}"` : ""}
@@ -193,7 +199,7 @@ export function updateMedicalItem(mm, medicalItem, clientMutationLabel) {
   const requestedDateTime = new Date();
   return graphql(
     mutation.payload,
-    ["MEDICAL_SERVICE_MUTATION_REQ", "MEDICAL_SERVICE_UPDATE_RESP", "MEDICAL_SERVICE_MUTATION_ERR"],
+    ["MEDICAL_ITEM_MUTATION_REQ", "MEDICAL_ITEM_UPDATE_RESP", "MEDICAL_ITEM_MUTATION_ERR"],
     {
       clientMutationId: mutation.clientMutationId,
       clientMutationLabel,
@@ -237,7 +243,7 @@ export function deleteMedicalItem(mm, medicalItem, clientMutationLabel) {
 export function fetchMedicalService(mm, medicalServiceId, clientMutationId) {
   const filters = [];
   if (medicalServiceId) {
-    filters.push(`uuid: "${formatGQLString(medicalServiceId)}"`);
+    filters.push(`uuid: "${formatGQLString(medicalServiceId)}", showHistory: true`);
   } else if (clientMutationId) {
     filters.push(`clientMutationId: "${formatGQLString(clientMutationId)}"`);
   }
@@ -265,7 +271,7 @@ export function fetchMedicalServices(mm) {
 export function fetchMedicalItem(mm, medicalItemId, clientMutationId) {
   const filters = [];
   if (medicalItemId) {
-    filters.push(`uuid: "${formatGQLString(medicalItemId)}"`);
+    filters.push(`uuid: "${formatGQLString(medicalItemId)}", showHistory: true`);
   } else if (clientMutationId) {
     filters.push(`clientMutationId: "${formatGQLString(clientMutationId)}"`);
   }
@@ -291,18 +297,78 @@ export function newMedicalItem() {
 
 export function fetchMedicalServiceMutation(mm, clientMutationId) {
   const payload = formatPageQuery(
-    "mutationLogs",
+    "medicalServices",
     [`clientMutationId:"${clientMutationId}"`],
-    ["id", "medicalServices{id}"],
+    ["uuid"],
   );
   return graphql(payload, "MEDICAL_SERVICE");
 }
 
 export function fetchMedicalItemMutation(mm, clientMutationId) {
   const payload = formatPageQuery(
-    "mutationLogs",
+    "medicalItems",
     [`clientMutationId:"${clientMutationId}"`],
-    ["id", "medicalItems{id}"],
+    ["uuid"],
   );
   return graphql(payload, "MEDICAL_ITEM");
+}
+
+export function medicalServicesValidationCheck(mm, variables) {
+  return graphqlWithVariables(
+    `
+    query ($serviceCode: String!) {
+      isValid: validateServiceCode(serviceCode: $serviceCode)
+    }
+    `,
+    variables,
+    `SERVICES_FIELDS_VALIDATION`,
+  );
+}
+
+export function medicalServicesSetValid() {
+  return (dispatch) => {
+    dispatch({ type: `SERVICES_FIELDS_VALIDATION_SET_VALID` });
+  };
+}
+
+export function medicalServicesValidationClear() {
+  return (dispatch) => {
+    dispatch({ type: `SERVICES_FIELDS_VALIDATION_CLEAR` });
+  };
+}
+
+export function medicalItemsValidationCheck(mm, variables) {
+  return graphqlWithVariables(
+    `
+    query ($itemCode: String!) {
+      isValid: validateItemCode(itemCode: $itemCode)
+    }
+    `,
+    variables,
+    `ITEMS_FIELDS_VALIDATION`,
+  );
+}
+
+export function medicalItemsSetValid() {
+  return (dispatch) => {
+    dispatch({ type: `ITEMS_FIELDS_VALIDATION_SET_VALID` });
+  };
+}
+
+export function medicalItemsValidationClear() {
+  return (dispatch) => {
+    dispatch({ type: `ITEMS_FIELDS_VALIDATION_CLEAR` });
+  };
+}
+
+export function clearServiceForm() {
+  return (dispatch) => {
+    dispatch({ type: "CLEAR_SERVICE_FORM" });
+  };
+}
+
+export function clearItemForm() {
+  return (dispatch) => {
+    dispatch({ type: "CLEAR_ITEM_FORM" });
+  };
 }
