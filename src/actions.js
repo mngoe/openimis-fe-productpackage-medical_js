@@ -248,12 +248,6 @@ export function fetchMedicalService(mm, medicalServiceId, clientMutationId) {
   return graphql(payload, "MEDICAL_SERVICE_OVERVIEW");
 }
 
-export function fetchMedicalServices(mm) {
-  const filters = [];
-  const payload = formatPageQuery("medicalServices", filters, MEDICAL_SERVICE_FULL_PROJECTION(mm));
-  return graphql(payload, "MEDICAL_SERVICE_LIST");
-}
-
 export function fetchMedicalItem(mm, medicalItemId, clientMutationId) {
   const filters = [];
   if (medicalItemId) {

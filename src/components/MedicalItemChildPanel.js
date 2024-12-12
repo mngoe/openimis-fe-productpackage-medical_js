@@ -18,9 +18,6 @@ import {
 } from "@openimis/fe-core";
 import { Paper, Box } from "@material-ui/core";
 import _ from "lodash";
-import { fetchMedicalService, fetchMedicalServices } from "../actions"
-
-import { claimedAmount, approvedAmount } from "../helpers/amounts";
 
 const styles = (theme) => ({
   paper: theme.paper.paper,
