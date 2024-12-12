@@ -44,7 +44,7 @@ class MedicalServiceMasterPanel extends FormPanel {
   }
 
   showCheckboxManual= (pSelection) => {
-    if(pSelection!=null){
+    if(pSelection!=null && pSelection!="S"){
       this.showManual = true;
       this.setState(
         {
@@ -64,7 +64,7 @@ class MedicalServiceMasterPanel extends FormPanel {
   changeManual =  () => {
     this.setState(
       {
-        readOnlyPrice : !this.state.readOnlyPrice
+        readOnlyPrice : !this.state.readOnlyPrice,
       }
     );
   };
@@ -177,7 +177,7 @@ class MedicalServiceMasterPanel extends FormPanel {
             />
           </Grid>
           }
-          <Grid item xs={3} className={classes.item}>
+          <Grid item xs={2} className={classes.item}>
             <AmountInput
               module="admin"
               label={this.props.medicalService.packagetype== SERVICE_TYPE_PP_F ? `edit.services.ceiling` : `medical.service.price`}
