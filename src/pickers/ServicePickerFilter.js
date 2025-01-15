@@ -19,7 +19,6 @@ const ServicePickerFilter = (props) => {
     extraFragment,
     multiple,
     claimProgram
-    
   } = props;
   const [searchString, setSearchString] = useState(null);
   const { formatMessage } = useTranslations("medical");
